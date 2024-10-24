@@ -1,13 +1,82 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.sky {
+    background: linear-gradient(to top, #87CEEB, #ffffff);
+    width: 100%;
+    height: 100vh;
+    position: relative;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.airplane {
+    font-size: 50px;
+    position: absolute;
+    top: 50%;
+    left: -100px;
+    transform: translateY(-50%);
+    animation: fly 10s infinite linear;
 }
+
+@keyframes fly {
+    0% {
+        left: -100px;
+        transform: translateY(-50%) rotate(0deg);
+    }
+    50% {
+        top: 40%;
+        transform: translateY(-50%) rotate(10deg);
+    }
+    100% {
+        left: 100vw;
+        top: 50%;
+        transform: translateY(-50%) rotate(-5deg);
+    }
+}
+
+.sky2{
+    background: linear-gradient(to top, #87CEEB, #ffffff);
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.bird {
+    font-size: 40px;
+    color: green;
+    position: absolute;
+    top: 50%;
+    left: -100px;
+    animation: fly 8s infinite linear;
+}
+
+.bird1 {
+    animation-duration: 10s;
+    animation-delay: 0s;
+}
+
+.bird2 {
+    animation-duration: 12s;
+    animation-delay: 2s;
+    top: 30%;
+}
+
+.bird3 {
+    animation-duration: 14s;
+    animation-delay: 4s;
+    top: 70%;
+}
+
+@keyframes fly {
+    0% {
+        left: -100px;
+        transform: translateY(-50%) scale(1) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-50%) scale(1.1) rotate(5deg);
+    }
+    100% {
+        left: 100vw;
+        transform: translateY(-50%) scale(1) rotate(-5deg);
+    }
+}
+
