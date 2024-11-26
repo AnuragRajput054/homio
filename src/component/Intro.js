@@ -7,7 +7,7 @@ const Intro = () => {
     <div className="">
       <div className="absolute">
         <img
-          src="https://i0.wp.com/newtraveltech.com/wp-content/uploads/2022/12/15-Ways-to-Get-to-Know-A-New-City-featured.jpg"
+          src="https://wallpapers.com/images/featured/beautiful-background-td7gsxerv3ecl20h.jpg"
           alt="bg"
         />
       </div>
@@ -33,9 +33,12 @@ const Intro = () => {
             >
               User
             </Link>
-            <button className="p-4  w-2/6 rounded-lg  transition duration-300 ease-in-out hover:scale-105 hover:border hover:to-black-700 hover:shadow-2xl bg-orange-500">
+            <Link
+              to={"/admin"}
+              className="p-4 pl-20 h-16 w-2/6 rounded-lg transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl font-bold bg-orange-500"
+            >
               Admin
-            </button>
+            </Link>
           </div>
         </div>
       </div>

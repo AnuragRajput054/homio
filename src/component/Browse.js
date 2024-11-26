@@ -1,8 +1,14 @@
-import React from 'react'
+import ServiceCard from './ServiceCard';
+import AboutSection from './AboutSection';
+import Nav from './Nav';
 
-const Browse = () => {
+const Browse = () => { 
   return (
-    <div>Browse</div>
+    <div>
+      <Nav/>
+      <AboutSection/>
+      <ServiceCard/>
+    </div>
   )
 }
 
