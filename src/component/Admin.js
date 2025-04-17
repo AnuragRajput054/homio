@@ -1,66 +1,222 @@
-import React from 'react';
-import Header from './Header';
+import React, { useState } from "react";
+import Header from "./Header";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    service: "",
+    serviceName: "",
+    city: "",
+    location: "",
+    pincode: "",
+    image: null,
+    mobileNumber: "",
+    latitude: "",
+    longitude: "",
+  });
+
+  const handleChange = (e) => {
+    if (e.target.name === "image") {
+      setFormData({ ...formData, image: e.target.files[0] });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        const updatedFormData = {
+          ...formData,
+          latitude: lat,
+          longitude: lng,
+        };
+
+        const payload = new FormData();
+        for (let key in updatedFormData) {
+          payload.append(key, updatedFormData[key]);
+        }
+
+        try {
+          const res = await axios.post(
+            "http://localhost:8080/api/admin/submit",
+            payload,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
+          alert(res.data);
+          navigate("/");
+        } catch (error) {
+          console.log("error----", error);
+          alert("Error uploading data");
+        }
+      },
+      (error) => {
+        alert("Please allow location access to register the service.");
+        console.error("Geolocation error:", error);
+      }
+    );
+  };
+
   return (
-    <div className="absolute">
-      <Header/>
-      {/* <div className="absolute h-screen  inset-0">
-        <img
-          src="https://static.vecteezy.com/system/resources/thumbnails/019/011/154/small_2x/abstract-watercolor-paint-background-beautiful-blue-green-and-yellow-watercolor-splash-design-colorful-plain-green-tones-watercolor-textures-paper-textured-aquarelle-canvas-for-modern-creative-design-vector.jpg"
-          alt="bg"
-          className="w-screen h-screen object-cover"
-        />
-      </div> */}
-       {/* Text Section */}
-       <div className="w-full h-72 pt-28 pl-20 relative flex justify-between bg-opacity-80 rounded-lg text-xl font-bold">
-          <p>
-            New Homio is a thoughtfully designed platform aimed at simplifying the process of relocating and settling into a new city. Recognizing the unique challenges that people face when they move, New Homio connects users to essential resources and services, making it easy to find nearby hostels, mess services, grocery shops, and other everyday necessities. The website offers a user-friendly interface with components like Home, Services, and Help that guide users to the information they need quickly and intuitively. With a focus on community and ease of access, New Homio aims to reduce the stress of adjusting to new surroundings by providing reliable information and convenient solutions all in one place.
-            <br/><br/>
-            One of New Homio’s standout features is its future integration of a payment gateway, offering users a streamlined way to make payments for services and utilities. This additional functionality will enable users to complete transactions directly on the site, enhancing convenience and making New Homio a one-stop solution. Designed with a warm, welcoming aesthetic, the website ensures that anyone moving to a new city feels at home faster. New Homio provides a valuable digital space for finding essential local services, helping users settle in with ease and confidence.
-          </p>
-          <div className='mr-8'>  <div className="ml-24 rounded-xl">
-                  <img
-                    src="https://mediaim.expedia.com/destination/1/2d75301e5fa5840846672492693f1fb3.jpg"
-                    alt="New Homio"
-                    className="rounded-xl shadow-2xl"
-                  />
-         </div>
-         <div className=" ml-20 mt-32 rounded-xl">
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Indore_Rajwada01.jpg/1200px-Indore_Rajwada01.jpg"
-                    alt="New Homio"
-                    className="rounded-xl shadow-2xl"
-                  />
-         </div>
-         <div className=" ml-20 mt-32 rounded-xl">
-                  <img
-                    src="https://media.istockphoto.com/id/1283363191/photo/views-of-slums-on-the-shores-of-mumbai-india-against-the-backdrop-of-skyscrapers-under.jpg?s=612x612&w=0&k=20&c=vtj11JIJtkO2XGLZX1PdsQhy3kFfTwz3Z5H-THc0ScU="
-                    alt="New Homio"
-                    className="rounded-xl shadow-2xl"
-                  />
-         </div>
-         </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#f0f4ff] to-[#cce0ff] text-gray-800 font-[Poppins]">
+      {/* <Header /> */}
+      <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="md:col-span-2">
+          <div className="mb-10">
+            <h2 className="text-4xl font-extrabold mb-6 text-blue-700 animate-fade-in">
+              Welcome to New Homio
+            </h2>
+            <p className="text-lg leading-relaxed tracking-wide text-gray-700">
+              New Homio is a thoughtfully designed platform aimed at simplifying
+              the process of relocating and settling into a new city. It
+              connects users to essential resources like hostels, mess services,
+              grocery shops, and more.
+              <br />
+              <br />
+              With upcoming features like integrated payment gateways, we aim to
+              be a one-stop solution for your relocation needs.
+            </p>
+          </div>
+
+          <div className="bg-white p-8 mt-10 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] border border-gray-200 animate-slide-up">
+            <h3 className="text-2xl font-semibold text-center text-blue-700 mb-6">
+              Admin: Register a Service Provider
+            </h3>
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black"
+            >
+              <input
+                type="text"
+                name="firstName"
+                className="p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="First Name"
+                onChange={handleChange}
+              />
+              <input
+                type="text"
+                name="lastName"
+                className="p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Last Name"
+                onChange={handleChange}
+              />
+              <input
+                type="email"
+                name="email"
+                className="col-span-2 p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Email"
+                onChange={handleChange}
+              />
+              <input
+                type="password"
+                name="password"
+                className="col-span-2 p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Password"
+                onChange={handleChange}
+              />
+
+              <input
+                type="text"
+                name="mobileNumber"
+                className="col-span-2 p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Contact Number"
+                onChange={handleChange}
+              />
+
+              <div className="col-span-2">
+                <select
+                  name="service"
+                  className="w-full p-3 rounded-xl border bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  value={formData.service}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value=""> Choose a Service </option>
+                  <option value="Hostel">Hostel</option>
+                  <option value="Mess">Mess</option>
+                  <option value="Hotels">Hotels</option>
+                  <option value="Hospitals">Hospitals</option>
+                  <option value="Barber">Barber</option>
+                  <option value="Grocery">Grocery</option>
+                  <option value="Electrician">Electrician</option>
+                  <option value="Plumber">Plumber</option>
+                  <option value="Stationary">Stationary</option>
+                </select>
+              </div>
+
+              <input
+                type="text"
+                name="serviceName"
+                className="col-span-2 p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Please Enter Name of your Service"
+                onChange={handleChange}
+              />
+
+              <input
+                type="text"
+                name="city"
+                className="p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="City"
+                onChange={handleChange}
+              />
+              <input
+                type="text"
+                name="location"
+                className="p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Exact Location"
+                onChange={handleChange}
+              />
+              <input
+                type="text"
+                name="pincode"
+                className="col-span-2 p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder="Pincode"
+                onChange={handleChange}
+              />
+              <input
+                type="file"
+                name="image"
+                className="col-span-2 p-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                onChange={handleChange}
+              />
+
+              <button
+                type="submit"
+                className="col-span-2 bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition-all font-semibold"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
         </div>
 
-
-      <div className=" flex justify-between items-start ml-40 p-8 space-x-8 mt-80">
-        {/* Form Section */}
-        <div className="w-3/6 p-6 mr-36 rounded-lg border-2 shadow-md">
-          <p className="text-xl font-bold underline mb-4 text-center">Welcome Admin ,Register Here!</p>
-        
-          <form className="space-y-6 text-black">
-            <input type="text" className=" w-3/6 p-3 font-bold rounded-lg" placeholder="Enter First Name" />
-            <input type="text" className=" w-3/6 p-3 font-bold rounded-lg" placeholder="Enter Last Name" />
-            <input type="text" className="w-full p-3 font-bold rounded-lg" placeholder="Enter Your Email Id" />
-            <input type="password" className="w-full p-3 font-bold rounded-lg" placeholder="Enter Password" />
-            <input type="text" className="w-full p-3  font-bold rounded-lg" placeholder="Enter Service" />
-            <input type="text" className="w-full p-3 font-bold rounded-lg" placeholder="Enter City" />
-            <input type="text" className="w-full p-3 font-bold rounded-lg" placeholder="Exact Location"/>
-            <input type="text" className="w-full p-3 font-bold rounded-lg" placeholder="Enter Pin code" />
-            <input type="file" className="w-full p-3 font-bold rounded-lg" placeholder="Upload Image" />
-            <button className="w-full p-3 mt-4 bg-blue-300 rounded-lg font-bold">Submit</button>
-          </form>
+        <div className="space-y-8 ml-4 animate-slide-in-right">
+          {[
+            "https://mediaim.expedia.com/destination/1/2d75301e5fa5840846672492693f1fb3.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Indore_Rajwada01.jpg/1200px-Indore_Rajwada01.jpg",
+            "https://media.istockphoto.com/id/1283363191/photo/views-of-slums-on-the-shores-of-mumbai-india-against-the-backdrop-of-skyscrapers-under.jpg?s=612x612&w=0&k=20&c=vtj11JIJtkO2XGLZX1PdsQhy3kFfTwz3Z5H-THc0ScU=",
+            "https://images.squarespace-cdn.com/content/v1/61085dcb35f7242682cd3122/ad95e52f-33bb-40a8-a82b-316155a019ab/m+g+road+and++holkarstedium++01a_credit_raju+pawar.jpg",
+          ].map((src, index) => (
+            <img
+              key={index}
+              className="rounded-2xl shadow-xl object-cover w-full h-60 hover:scale-105 transition-transform duration-300"
+              src={src}
+              alt={`homio-img${index + 1}`}
+            />
+          ))}
         </div>
       </div>
     </div>

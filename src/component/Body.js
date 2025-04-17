@@ -9,6 +9,8 @@ import { auth } from "../utils/firebase";
 import { addUser, removeUser } from "../utils/userSlice";
 import HotelCard from "./HotelCard";
 import Admin from "./Admin";
+import HostelsList from "./Hostel";
+import ServiceDetails from "./ServiceDetails";
 
 
 const Body = () => {
@@ -27,13 +29,29 @@ const Body = () => {
       element:<First/>
     },
     {
+      path: "/browse/service/:serviceType",
+      element: <ServiceDetails />
+    },
+    {
       path:"/hotel",
       element: <HotelCard/>
     },
     {
       path : "/admin",
       element : <Admin/>
-    }
+    },
+    {
+      path : "/hostel",
+      element : <HostelsList/>
+    },
+    // {
+    //   path: "/browse/service/:serviceType",
+    //   element: <NearbyServicePage />
+    // },
+
+  
+    
+
   ]);
 
   useEffect(()=>{

@@ -1,18 +1,22 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Nav = () => {
+  const nevigate = useNavigate();
+  const movetoHome=()=>{
+        nevigate("/"); 
+  }
+
   return (
     <div>
          <header className="bg-white shadow-md ">
       <nav className="container mx-auto p-4 flex justify-between items-center">
         <div className="text-2xl font-bold text-orange-500">
-          New Homio
-          {/* <img src="https://homio.ee/wp-content/uploads/2023/10/homio-logo.png" alt='logo' className='w-96 h-10'  /> */}
- 
+          New Homio 
         </div>
 
         <ul className="flex space-x-8 text-2xl pl-96 font-bold">
-          <li className="hover:text-red-500 cursor-pointer">
+          <li className="hover:text-red-500 cursor-pointer"   onClick={() => movetoHome()}>
             Home
           </li>
           <li className="relative">

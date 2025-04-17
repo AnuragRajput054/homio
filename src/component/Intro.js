@@ -1,46 +1,86 @@
 import React from "react";
-import First from "./First";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaMapMarkerAlt, FaUsers, FaTools, FaUtensils } from "react-icons/fa";
 
 const Intro = () => {
   return (
-    <div className="">
-      <div className="absolute">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0">
         <img
-          src="https://wallpapers.com/images/featured/beautiful-background-td7gsxerv3ecl20h.jpg"
-          alt="bg"
+          className="h-full w-full object-cover"
+          src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d"
+          alt="New City Background"
         />
+        <div className="absolute inset-0 bg-black bg-opacity-70"></div> {/* Dark overlay */}
       </div>
-      <div className="absolute  p-32 h-auto flex justify-between mt-36">
-        <div className="w-3/6">
-          <p className="text-2xl text-yellow-50">
-            <p className="font-bold">Welcome to New Homio</p>
-            "Welcome to New Homio – your one-stop solution for settling into a
-            new city. From finding hostels and mess services to locating local
-            grocery shops, we provide all the essential resources you need for a
-            smooth transition. Let us help you feel at home in your new
-            surroundings!"
-          </p>
-        </div>
-        <div className="w-3/6 pl-28">
-          <h1 className="font-bold text-2xl ml-48 text-yellow-50">
-            Are you a User or an Admin?
+
+      {/* Foreground Content */}
+      <div className="relative z-10 px-6 md:px-20 py-10 max-w-7xl w-full flex flex-col md:flex-row items-center justify-between gap-10">
+        {/* Left Section */}
+        <motion.div
+          initial={{ opacity: 0, x: -60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+          className="w-full md:w-1/2 text-white"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-orange-400 drop-shadow-lg">
+            Welcome to New Homio
           </h1>
-          <div className="flex justify-between mt-10">
+          <p className="text-lg leading-7 text-gray-200 drop-shadow">
+            Moving to a new city can be overwhelming — that’s where{" "}
+            <span className="text-orange-300 font-semibold">New Homio</span>{" "}
+            steps in. Whether you're a student, working professional, or a
+            newcomer, we help you find:
+          </p>
+          <ul className="mt-6 space-y-3 text-base text-gray-100 drop-shadow">
+            <li className="flex items-center gap-3">
+              <FaMapMarkerAlt className="text-orange-300" /> Hostels & PGs near your location
+            </li>
+            <li className="flex items-center gap-3">
+              <FaUtensils className="text-orange-300" /> Mess, tiffin, and local food joints
+            </li>
+            <li className="flex items-center gap-3">
+              <FaTools className="text-orange-300" /> Plumbers, electricians, and barbers
+            </li>
+            <li className="flex items-center gap-3">
+              <FaUsers className="text-orange-300" /> A local network to connect with
+            </li>
+          </ul>
+        </motion.div>
+
+        {/* Right Section */}
+        <motion.div
+          initial={{ opacity: 0, x: 60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+          className="w-full md:w-1/2 flex flex-col items-center"
+        >
+          <h2 className="text-2xl md:text-3xl font-semibold text-gray-100 mb-6 text-center drop-shadow-lg">
+            Are you a User or an Admin?
+          </h2>
+
+          <div className="flex w-full justify-center gap-6">
             <Link
-              to={"/login"}
-              className="p-4 pl-20 h-16 w-2/6 rounded-lg transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl font-bold bg-orange-500"
+              to="/login"
+              className="w-36 text-center py-3 bg-orange-500 hover:bg-orange-600 transition-all duration-300 text-white font-bold rounded-xl shadow-xl hover:scale-105"
             >
               User
             </Link>
             <Link
-              to={"/admin"}
-              className="p-4 pl-20 h-16 w-2/6 rounded-lg transition duration-300 ease-in-out hover:scale-105 hover:shadow-2xl font-bold bg-orange-500"
+              to="/admin"
+              className="w-36 text-center py-3 bg-orange-500 hover:bg-orange-600 transition-all duration-300 text-white font-bold rounded-xl shadow-xl hover:scale-105"
             >
               Admin
             </Link>
           </div>
-        </div>
+
+          {/* Scroll down indicator */}
+          <div className="mt-10 animate-bounce text-white text-sm opacity-70">
+            Scroll down to explore more ↓
+          </div>
+        </motion.div>
       </div>
     </div>
   );
